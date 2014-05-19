@@ -1,0 +1,88 @@
+﻿<Application x:Class="WpfPropertyGrid.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:controls="clr-namespace:WpfPropertyGrid"
+             xmlns:vms="clr-namespace:WpfPropertyGrid.Vms" StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <Style TargetType="{x:Type controls:SettingControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type controls:SettingControl}">
+                        <Border x:Name="DirtyBorder"
+                                BorderBrush="{x:Null}"
+                                BorderThickness="2" CornerRadius="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Margin="25,10,25,10" VerticalAlignment="Center"
+                                           Text="{Binding Header,
+                                                          RelativeSource={RelativeSource TemplatedParent}}" />
+
+                                <TextBox Grid.Column="1" MinWidth="100" Margin="25,10,25,10" HorizontalAlignment="Right"
+                                         VerticalAlignment="Center" IsUndoEnabled="False"
+                                         Text="{Binding Value,
+                                                        RelativeSource={RelativeSource TemplatedParent},
+                                                        UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDirty" Value="True">
+                                <Setter TargetName="DirtyBorder" Property="BorderBrush" Value="LightBlue" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="BoolSettingStyle" TargetType="{x:Type controls:SettingControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type controls:SettingControl}">
+                        <Border x:Name="DirtyBorder"
+                                BorderBrush="{x:Null}"
+                                BorderThickness="2" CornerRadius="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Margin="25,10,25,10" VerticalAlignment="Center"
+                                           Text="{Binding Header,
+                                                          RelativeSource={RelativeSource TemplatedParent}}" />
+
+                                <CheckBox Grid.Column="1" MinWidth="100" Margin="25,10,25,10" HorizontalAlignment="Right"
+                                          VerticalAlignment="Center"
+                                          IsChecked="{Binding Value,
+                                                              RelativeSource={RelativeSource TemplatedParent},
+                                                              UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDirty" Value="True">
+                                <Setter TargetName="DirtyBorder" Property="BorderBrush" Value="LightBlue" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <DataTemplate x:Key="UndoButtonsTemplate" DataType="{x:Type vms:ISaveUndo}">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Margin" Value="7.5,0,7.5,0" />
+                    </Style>
+                </StackPanel.Resources>
+                <Button Command="{Binding UndoCommand}" Content="Undo" />
+
+                <Button Command="{Binding SaveCommand}" Content="Save" />
+            </StackPanel>
+        </DataTemplate>
+    </Application.Resources>
+</Application>
